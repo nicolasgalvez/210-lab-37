@@ -15,7 +15,6 @@ const int MODULUS = 100003;
 
 map<int, list<string>> hash_table;
 
-
 int gen_hash_index(string);
 void test();
 int loadCodes();
@@ -34,7 +33,7 @@ int loadCodes()
         while (getline(file, line))
         {
             // add to the tree.
-            grand_total+=gen_hash_index(line);
+            grand_total += gen_hash_index(line);
         }
         file.close();
     }
@@ -45,7 +44,8 @@ int loadCodes()
 int gen_hash_index(string ascii_text)
 {
     int ascii_int = 0;
-    int hash_index;;
+    int hash_index;
+    ;
     for (size_t i = 0; i < ascii_text.length(); i++)
     {
         /* code */
@@ -61,28 +61,16 @@ int gen_hash_index(string ascii_text)
 void test()
 {
     cout << "Running tests" << endl;
-    // if (gen_hash_index("A") != 65) {
-    //     cout << "Test 1 failed, A should = 65" << endl;
-    // } else {
-    //     cout << "Test 1 Passed" << endl;
-    // }
-    // if (gen_hash_index("AA") != 130) {
-    //     cout << "Test 2 failed, AA should = 130" << endl;
-    // } else {
-    //     cout << "Test 2 Passed" << endl;
-    // }
-    // if (gen_hash_index("536B9DFC93AF") != 729) {
-    //     cout << "Test 3 failed, 536B9DFC93AF should = 729" << endl; // according to chat gpt
-    // } else {
-    //     cout << "Test 3 Passed" << endl;
-    // }
 
-    if (loadCodes() != 69893419) {
+    if (loadCodes() != 69893419)
+    {
         cout << "Test 3 failed, loadCodes should return 69893419" << endl; // according to chat gpt
-    } else {
+    }
+    else
+    {
         cout << "Test 3 Passed: loadCodes returned 69893419" << endl;
     }
-    
+
     // show the first 100 entries
     int count = 0;
     for (auto it = hash_table.begin(); it != hash_table.end(); it++)
@@ -92,46 +80,27 @@ void test()
         {
             cout << *values << " ";
         }
-        cout << endl << endl;
+        cout << endl
+             << endl;
         count++;
-        if (count > 100) {
+        if (count > 100)
+        {
             break;
         }
     }
 
     // What are the number of keys, and collisions per key?
-    int collisions = 0;
-    int keys = 0;
-    vector<int> collisions_per_key;
-    for (auto it = hash_table.begin(); it != hash_table.end(); it++)
-    {   
-        keys++;
-        collisions_per_key.push_back(it->second.size());
-        // if (it->second.size() > 1) {
-        //     collisions++;
-        // }
-        cout << "Key: " << it->first << " Collisions: " << it->second.size() << endl;
-    }
-    // cout << "Keys: " << keys << " Collisions: " << collisions_per_key.size() << endl;
+    // for (auto it = hash_table.begin(); it != hash_table.end(); it++)
+    // {
+    //     cout << "Key: " << it->first << " Collisions: " << it->second.size() << endl;
+    // }
 
     // it seems like the hash looks like a bell curve with a higher modulus.
     // probably wouldn't be the case if the data was more random?
-
 }
 
 int main()
 {
     test();
-    // cout << loadCodes() << endl;
     return 0;
 }
-
-
-
-/*
-These targets are present in the dataset and can be used for testing:
-536B9DFC93AF
-1DA9D64D02A0
-666D109AA22E
-E1D2665B21EA
-*/
