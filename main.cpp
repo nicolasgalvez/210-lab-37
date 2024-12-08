@@ -172,6 +172,79 @@ int main()
 {
     HashTable hash_table(MODULUS);
     loadCodes(hash_table);
+
+
+
+       // display menu
+    int choice;
+    do
+    {
+            // print the menu
+    cout << "1. Print the first 100 entries" << endl;
+    cout << "2. Find a key" << endl;
+    cout << "3. Remove a key" << endl;
+    cout << "0. Exit" << endl;
+        cin >> choice;
+        cin.ignore();
+        switch (choice)
+        {
+        case 1:
+        {
+            string code;
+            cout << "Enter a code: ";
+            getline(cin, code);
+            tree.insertNode(code);
+            break;
+        }
+        case 2:
+        {
+            string code;
+            cout << "Enter a code to delete: ";
+            getline(cin, code);
+            tree.remove(code);
+            break;
+        }
+        case 3:
+        {
+            string code;
+            cout << "Enter a code to search for: ";
+            getline(cin, code);
+            if (tree.searchNode(code))
+            {
+                cout << "Code found." << endl;
+            }
+            else
+            {
+                cout << "Code not found." << endl;
+            }
+            break;
+        }
+        case 4:
+        {
+            string code, replacement;
+            cout << "Enter a code to search for: ";
+            getline(cin, code);
+            cout << "Enter a replacement: ";
+            getline(cin, replacement);
+            if (tree.modifyNode(code, replacement))
+            {
+                cout << "Code replaced." << endl;
+            }
+            else
+            {
+                cout << "Code not replaced." << endl;
+            }
+            break;
+        }
+        case 5:
+            tree.displayInOrder();
+            break;
+        case 0:
+            break;
+        default:
+            cout << "Invalid choice." << endl;
+        }
+    } while (choice != 0);
     test(hash_table);
     return 0;
 }
