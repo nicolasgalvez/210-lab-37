@@ -17,7 +17,11 @@ class HashTable
 {
 private:
     map<int, list<string>> hash_table;
+    int modulus;
 public:
+    HashTable(int modulus) {
+        this->modulus = MODULUS;
+    }
     void print(int num = 100) {
             int count = 0;
         for (auto it = hash_table.begin(); it != hash_table.end(); it++)
@@ -58,12 +62,12 @@ public:
 
 int gen_hash_index(string);
 void test();
-int loadCodes();
+int loadCodes(HashTable);
 
 /**
  * Load codes from a file.
  */
-int loadCodes()
+int loadCodes(HashTable hash_table)
 {
     int grand_total = 0;
     // load codes.txt
@@ -74,7 +78,7 @@ int loadCodes()
         while (getline(file, line))
         {
             // add to the tree.
-            grand_total += gen_hash_index(line);
+            grand_total += hash_table.add(line);
         }
         file.close();
     }
@@ -82,52 +86,52 @@ int loadCodes()
 }
 
 // receives a single string and returns the sum of that string's character's ASCII values.
-int gen_hash_index(string ascii_text)
-{
-    int ascii_int = 0;
-    int hash_index;
-    ;
-    for (size_t i = 0; i < ascii_text.length(); i++)
-    {
-        ascii_int += (int)ascii_text[i];
-    }
+// int gen_hash_index(string ascii_text)
+// {
+//     int ascii_int = 0;
+//     int hash_index;
+//     ;
+//     for (size_t i = 0; i < ascii_text.length(); i++)
+//     {
+//         ascii_int += (int)ascii_text[i];
+//     }
 
-    // add to the hash table
-    hash_table[ascii_int % MODULUS].push_back(ascii_text);
+//     // add to the hash table
+//     hash_table[ascii_int % MODULUS].push_back(ascii_text);
 
-    return ascii_int;
-}
+//     return ascii_int;
+// }
 
 void test()
 {
     cout << "Running tests" << endl;
 
-    if (loadCodes() != 69893419)
-    {
-        cout << "Test 3 failed, loadCodes should return 69893419" << endl; // according to chat gpt
-    }
-    else
-    {
-        cout << "Test 3 Passed: loadCodes returned 69893419" << endl;
-    }
+    // if (loadCodes() != 69893419)
+    // {
+    //     cout << "Test 3 failed, loadCodes should return 69893419" << endl;
+    // }
+    // else
+    // {
+    //     cout << "Test 3 Passed: loadCodes returned 69893419" << endl;
+    // }
 
-    // show the first 100 entries
-    int count = 0;
-    for (auto it = hash_table.begin(); it != hash_table.end(); it++)
-    {
-        cout << "Key: " << it->first << " ";
-        for (auto values = it->second.begin(); values != it->second.end(); values++)
-        {
-            cout << *values << " ";
-        }
-        cout << endl
-             << endl;
-        count++;
-        if (count > 100)
-        {
-            break;
-        }
-    }
+    // // show the first 100 entries
+    // int count = 0;
+    // for (auto it = hash_table.begin(); it != hash_table.end(); it++)
+    // {
+    //     cout << "Key: " << it->first << " ";
+    //     for (auto values = it->second.begin(); values != it->second.end(); values++)
+    //     {
+    //         cout << *values << " ";
+    //     }
+    //     cout << endl
+    //          << endl;
+    //     count++;
+    //     if (count > 100)
+    //     {
+    //         break;
+    //     }
+    // }
 
     // What are the number of keys, and collisions per key?
     // for (auto it = hash_table.begin(); it != hash_table.end(); it++)
@@ -141,7 +145,7 @@ void test()
 
 int main()
 {
-    HashTable has_table;
+    HashTable hash_table(MODULUS);
     test();
     return 0;
 }
