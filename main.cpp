@@ -7,10 +7,9 @@
 
 using namespace std;
 
-int sum_ascii(string);
+int gen_hash_index(string);
 void test();
 int loadCodes();
-
 /**
  * Load codes from a file.
  */
@@ -25,7 +24,7 @@ int loadCodes()
         while (getline(file, line))
         {
             // add to the tree.
-            grand_total+=sum_ascii(line);
+            grand_total+=gen_hash_index(line);
         }
         file.close();
     }
@@ -33,7 +32,7 @@ int loadCodes()
 }
 
 // receives a single string and returns the sum of that string's character's ASCII values.
-int sum_ascii(string ascii_text)
+int gen_hash_index(string ascii_text)
 {
     int ascii_int = 0;
     for (size_t i = 0; i < ascii_text.length(); i++)
@@ -47,17 +46,17 @@ int sum_ascii(string ascii_text)
 void test()
 {
     cout << "Running tests" << endl;
-    if (sum_ascii("A") != 65) {
+    if (gen_hash_index("A") != 65) {
         cout << "Test 1 failed, A should = 65" << endl;
     } else {
         cout << "Test 1 Passed" << endl;
     }
-    if (sum_ascii("AA") != 130) {
+    if (gen_hash_index("AA") != 130) {
         cout << "Test 2 failed, AA should = 130" << endl;
     } else {
         cout << "Test 2 Passed" << endl;
     }
-    if (sum_ascii("536B9DFC93AF") != 729) {
+    if (gen_hash_index("536B9DFC93AF") != 729) {
         cout << "Test 3 failed, 536B9DFC93AF should = 729" << endl; // according to chat gpt
     } else {
         cout << "Test 3 Passed" << endl;
