@@ -9,6 +9,28 @@ using namespace std;
 
 int sum_ascii(string);
 void test();
+int loadCodes();
+
+/**
+ * Load codes from a file.
+ */
+int loadCodes()
+{
+    int grand_total = 0;
+    // load codes.txt
+    ifstream file("lab-37-data.txt");
+    if (file.is_open())
+    {
+        string line;
+        while (getline(file, line))
+        {
+            // add to the tree.
+            grand_total+=sum_ascii(line);
+        }
+        file.close();
+    }
+    return grand_total;
+}
 
 // receives a single string and returns the sum of that string's character's ASCII values.
 int sum_ascii(string ascii_text)
@@ -40,12 +62,20 @@ void test()
     } else {
         cout << "Test 3 Passed" << endl;
     }
+
+        if (loadCodes() != 69893419) {
+        cout << "Test 3 failed, loadCodes should return 69893419" << endl; // according to chat gpt
+    } else {
+        cout << "Test 3 Passed: loadCodes returned 69893419" << endl;
+    }
+    
+
 }
 
 int main()
 {
     test();
-
+    // cout << loadCodes() << endl;
     return 0;
 }
 
