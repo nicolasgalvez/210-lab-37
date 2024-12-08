@@ -50,6 +50,22 @@ public:
             }
         }
     }
+    void print_hash(int key) {
+         int count = 0;
+        for (auto it = hash_table.begin(); it != hash_table.end(); it++)
+        {
+            if (it->first == key) {
+                cout << "Key: " << it->first << " ";
+                for (auto values = it->second.begin(); values != it->second.end(); values++)
+                {
+                    cout << *values << " ";
+                }
+                cout << endl;
+                return;
+            }
+        }
+        cout << "Key not found" << endl;
+    }
     int add(string ascii_text) {
     int ascii_key = generate_key(ascii_text);
     // add to the hash table
@@ -75,6 +91,26 @@ public:
         }
         return -1;
     }
+    int modify(string ascii_text, string replacement) {
+        int find_key = find(ascii_text);
+        if (find_key == -1) {
+            return -1;
+        }
+            for (auto it = hash_table.begin(); it != hash_table.end(); it++)
+            {
+                if (it->first == find_key) {
+                    for (auto values = it->second.begin(); values != it->second.end(); values++)
+                    {
+                        if (*values == ascii_text) {
+                            *values = replacement;
+                            return find_key;
+                        }
+                    }
+                }
+            }
+             return -1;
+        }
+
     int find(string ascii_text) {
         int ascii_key = generate_key(ascii_text);
         for (auto it = hash_table.begin(); it != hash_table.end(); it++)
@@ -183,6 +219,9 @@ int main()
     cout << "1. Print the first 100 entries" << endl;
     cout << "2. Find a key" << endl;
     cout << "3. Remove a key" << endl;
+    cout << "4. Modify a key" << endl;
+    cout << "5. Print a hash" << endl;
+    cout << "6. Print meta" << endl;
     cout << "0. Exit" << endl;
         cin >> choice;
         cin.ignore();
@@ -190,32 +229,33 @@ int main()
         {
         case 1:
         {
-            string code;
-            cout << "Enter a code: ";
-            getline(cin, code);
-            tree.insertNode(code);
+            hash_table.print(100);
             break;
         }
         case 2:
         {
             string code;
-            cout << "Enter a code to delete: ";
+            cout << "Enter a code to find: ";
             getline(cin, code);
-            tree.remove(code);
+            int key = hash_table.find(code);
+            if (key != -1) {
+                cout << "Found in key " << key << endl;
+            } else {
+                cout << "Could not find " << code << endl;
+            }
+            
             break;
         }
         case 3:
         {
             string code;
-            cout << "Enter a code to search for: ";
+            cout << "Enter a code to search remove: ";
             getline(cin, code);
-            if (tree.searchNode(code))
-            {
-                cout << "Code found." << endl;
-            }
-            else
-            {
-                cout << "Code not found." << endl;
+            int key = hash_table.remove(code);
+            if (key != -1) {
+                cout << "Found in key " << key << endl;
+            } else {
+                cout << "Could not find " << code << endl;
             }
             break;
         }
@@ -226,25 +266,35 @@ int main()
             getline(cin, code);
             cout << "Enter a replacement: ";
             getline(cin, replacement);
-            if (tree.modifyNode(code, replacement))
+            if (hash_table.modify(code, replacement))
             {
                 cout << "Code replaced." << endl;
             }
             else
             {
-                cout << "Code not replaced." << endl;
+                cout << "Code not found." << endl;
             }
             break;
         }
         case 5:
-            tree.displayInOrder();
+        {
+                        string code;
+            cout << "Enter an index to print: ";
+            getline(cin, code);
+            hash_table.print_hash(stoi(code));
             break;
+        }
+        case 6:
+        {
+            hash_table.print_meta();
+            break;
+        }
         case 0:
             break;
         default:
             cout << "Invalid choice." << endl;
         }
     } while (choice != 0);
-    test(hash_table);
+    // test(hash_table);
     return 0;
 }
