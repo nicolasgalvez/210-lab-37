@@ -85,6 +85,13 @@ public:
     int add(string ascii_text)
     {
         int ascii_key = generate_key(ascii_text);
+
+        // if(find(ascii_text) != -1)
+        // {
+        //     cout << "Key already exists" << endl;
+        // return ascii_key;
+        // }
+
         // add to the hash table
         this->hash_table[ascii_key].push_back(ascii_text);
 
@@ -252,6 +259,7 @@ int main()
         cout << "4. Modify a key" << endl;
         cout << "5. Print a hash" << endl;
         cout << "6. Print meta" << endl;
+        cout << "7. Add a key" << endl;
         cout << "0. Exit" << endl;
         cin >> choice;
         cin.ignore();
@@ -323,6 +331,20 @@ int main()
         case 6:
         {
             hash_table.print_meta();
+            break;
+        }
+        case 7:
+        {
+            string code;
+            cout << "Enter a string to add: ";
+            getline(cin, code);
+            if(hash_table.find(code) != -1)
+            {
+                cout << "Key already exists" << endl;
+                break;
+            }
+            int key = hash_table.add(code);
+            cout << "Added to key " << key << endl;
             break;
         }
         case 0:
