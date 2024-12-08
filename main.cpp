@@ -35,8 +35,8 @@ void test()
     } else {
         cout << "Test 2 Passed" << endl;
     }
-        if (sum_ascii("AA") != 130) {
-        cout << "Test 3 failed, AA should = 130" << endl;
+    if (sum_ascii("536B9DFC93AF") != 729) {
+        cout << "Test 3 failed, 536B9DFC93AF should = 729" << endl; // according to chat gpt
     } else {
         cout << "Test 3 Passed" << endl;
     }
