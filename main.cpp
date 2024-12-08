@@ -18,6 +18,15 @@ class HashTable
 private:
     map<int, list<string>> hash_table;
     int modulus;
+    int generate_key(string ascii_text)
+    {
+        int ascii_int = 0;
+        for (size_t i = 0; i < ascii_text.length(); i++)
+        {
+            ascii_int += (int)ascii_text[i];
+        }
+        return ascii_int % this->modulus;
+    }
 public:
     HashTable(int modulus) {
         this->modulus = MODULUS;
@@ -41,23 +50,23 @@ public:
         }
     }
     int add(string ascii_text) {
-            int ascii_int = 0;
-    int hash_index;
-
-    for (size_t i = 0; i < ascii_text.length(); i++)
-    {
-        ascii_int += (int)ascii_text[i];
-    }
-
+    int ascii_key = generate_key(ascii_text);
     // add to the hash table
-    this->hash_table[ascii_int % MODULUS].push_back(ascii_text);
+    this->hash_table[ascii_key].push_back(ascii_text);
 
-    return ascii_int;
+    return ascii_key;
     }
-    void remove(string);
-    bool find(string);
-    void print();
-    void clear();
+    void remove(string ascii_text) {
+        int ascii_key = generate_key(ascii_text);
+    }
+    bool find(string ascii_text) {
+        int ascii_key = generate_key(ascii_text);
+
+        return false;
+    }
+    void clear() {
+        this->hash_table.clear();
+    }
 };
 
 int gen_hash_index(string);
@@ -102,7 +111,7 @@ int loadCodes(HashTable hash_table)
 //     return ascii_int;
 // }
 
-void test()
+void test(HashTable hash_table)
 {
     cout << "Running tests" << endl;
 
@@ -146,6 +155,6 @@ void test()
 int main()
 {
     HashTable hash_table(MODULUS);
-    test();
+    test(hash_table);
     return 0;
 }
