@@ -32,6 +32,7 @@ public:
         this->modulus = MODULUS;
     }
     void print(int num = 100) {
+        cout << "Printing the first " << num << " entries" << endl;
             int count = 0;
         for (auto it = hash_table.begin(); it != hash_table.end(); it++)
         {
@@ -59,24 +60,41 @@ public:
     void remove(string ascii_text) {
         int ascii_key = generate_key(ascii_text);
     }
-    bool find(string ascii_text) {
+    int find(string ascii_text) {
         int ascii_key = generate_key(ascii_text);
-
-        return false;
+        for (auto it = hash_table.begin(); it != hash_table.end(); it++)
+        {
+            if (it->first == ascii_key) {
+                for (auto values = it->second.begin(); values != it->second.end(); values++)
+                {
+                    if (*values == ascii_text) {
+                        return ascii_key;
+                    }
+                }
+            }
+        }
+        return -1;
     }
     void clear() {
         this->hash_table.clear();
     }
+    void print_meta() {
+            // What are the number of keys, and collisions per key?
+        for (auto it = hash_table.begin(); it != hash_table.end(); it++)
+        {
+            cout << "Key: " << it->first << " Collisions: " << it->second.size() << endl;
+        }
+    }
 };
 
 int gen_hash_index(string);
-void test();
-int loadCodes(HashTable);
+void test(HashTable &);
+int loadCodes(HashTable &);
 
 /**
  * Load codes from a file.
  */
-int loadCodes(HashTable hash_table)
+int loadCodes(HashTable &hash_table)
 {
     int grand_total = 0;
     // load codes.txt
@@ -111,10 +129,12 @@ int loadCodes(HashTable hash_table)
 //     return ascii_int;
 // }
 
-void test(HashTable hash_table)
+void test(HashTable &hash_table)
 {
     cout << "Running tests" << endl;
 
+    hash_table.print(100);
+    hash_table.print_meta();
     // if (loadCodes() != 69893419)
     // {
     //     cout << "Test 3 failed, loadCodes should return 69893419" << endl;
@@ -142,11 +162,7 @@ void test(HashTable hash_table)
     //     }
     // }
 
-    // What are the number of keys, and collisions per key?
-    // for (auto it = hash_table.begin(); it != hash_table.end(); it++)
-    // {
-    //     cout << "Key: " << it->first << " Collisions: " << it->second.size() << endl;
-    // }
+
 
     // it seems like the hash looks like a bell curve with a higher modulus.
     // probably wouldn't be the case if the data was more random?
@@ -155,6 +171,7 @@ void test(HashTable hash_table)
 int main()
 {
     HashTable hash_table(MODULUS);
+    loadCodes(hash_table);
     test(hash_table);
     return 0;
 }
