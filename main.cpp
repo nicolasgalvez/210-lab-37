@@ -13,6 +13,9 @@ using namespace std;
 const int MODULUS = 100003;
 // const int MODULUS = 97; // it seems like this results in more, but more even, collisions.
 
+/**
+ * HashTable manages a hash of strings
+ */
 class HashTable
 {
 private:
@@ -28,12 +31,17 @@ private:
         return ascii_int % this->modulus;
     }
 public:
-    HashTable(int modulus) {
+    HashTable(int modulus)
+    {
         this->modulus = MODULUS;
     }
-    void print(int num = 100) {
+    /**
+     * Print the entries, first 100 by default
+     */
+    void print(int num = 100)
+    {
         cout << "Printing the first " << num << " entries" << endl;
-            int count = 0;
+        int count = 0;
         for (auto it = hash_table.begin(); it != hash_table.end(); it++)
         {
             cout << "Key: " << it->first << " ";
@@ -42,7 +50,7 @@ public:
                 cout << *values << " ";
             }
             cout << endl
-                << endl;
+                 << endl;
             count++;
             if (count > num)
             {
@@ -50,11 +58,16 @@ public:
             }
         }
     }
-    void print_hash(int key) {
-         int count = 0;
+    /**
+     * Print a hash by key, this lists all the strings in the list
+     */
+    void print_hash(int key)
+    {
+        int count = 0;
         for (auto it = hash_table.begin(); it != hash_table.end(); it++)
         {
-            if (it->first == key) {
+            if (it->first == key)
+            {
                 cout << "Key: " << it->first << " ";
                 for (auto values = it->second.begin(); values != it->second.end(); values++)
                 {
@@ -66,22 +79,33 @@ public:
         }
         cout << "Key not found" << endl;
     }
-    int add(string ascii_text) {
-    int ascii_key = generate_key(ascii_text);
-    // add to the hash table
-    this->hash_table[ascii_key].push_back(ascii_text);
+    /**
+     * Add a string to the hash table
+     */
+    int add(string ascii_text)
+    {
+        int ascii_key = generate_key(ascii_text);
+        // add to the hash table
+        this->hash_table[ascii_key].push_back(ascii_text);
 
-    return ascii_key;
+        return ascii_key;
     }
-    int remove(string ascii_text) {
+    /**
+     * Remove a string from the hash table
+     */
+    int remove(string ascii_text)
+    {
         int find_key = find(ascii_text);
-        if (find_key != -1) {
+        if (find_key != -1)
+        {
             for (auto it = hash_table.begin(); it != hash_table.end(); it++)
             {
-                if (it->first == find_key) {
+                if (it->first == find_key)
+                {
                     for (auto values = it->second.begin(); values != it->second.end(); values++)
                     {
-                        if (*values == ascii_text) {
+                        if (*values == ascii_text)
+                        {
                             it->second.remove(ascii_text);
                             return find_key;
                         }
@@ -91,34 +115,46 @@ public:
         }
         return -1;
     }
-    int modify(string ascii_text, string replacement) {
+    /**
+     * Modify a string in the hash table
+     */
+    int modify(string ascii_text, string replacement)
+    {
         int find_key = find(ascii_text);
-        if (find_key == -1) {
+        if (find_key == -1)
+        {
             return -1;
         }
-            for (auto it = hash_table.begin(); it != hash_table.end(); it++)
+        for (auto it = hash_table.begin(); it != hash_table.end(); it++)
+        {
+            if (it->first == find_key)
             {
-                if (it->first == find_key) {
-                    for (auto values = it->second.begin(); values != it->second.end(); values++)
+                for (auto values = it->second.begin(); values != it->second.end(); values++)
+                {
+                    if (*values == ascii_text)
                     {
-                        if (*values == ascii_text) {
-                            *values = replacement;
-                            return find_key;
-                        }
+                        *values = replacement;
+                        return find_key;
                     }
                 }
             }
-             return -1;
         }
-
-    int find(string ascii_text) {
+        return -1;
+    }
+    /**
+     * Find a string in the hash table
+     */
+    int find(string ascii_text)
+    {
         int ascii_key = generate_key(ascii_text);
         for (auto it = hash_table.begin(); it != hash_table.end(); it++)
         {
-            if (it->first == ascii_key) {
+            if (it->first == ascii_key)
+            {
                 for (auto values = it->second.begin(); values != it->second.end(); values++)
                 {
-                    if (*values == ascii_text) {
+                    if (*values == ascii_text)
+                    {
                         return ascii_key;
                     }
                 }
@@ -126,11 +162,19 @@ public:
         }
         return -1;
     }
-    void clear() {
+    /**
+     * Blow it all to hell
+     */
+    void clear()
+    {
         this->hash_table.clear();
     }
-    void print_meta() {
-            // What are the number of keys, and collisions per key?
+    /**
+     * I was wondering how the table "looked", and if changing the modulus would change the distribution of keys.
+     */
+    void print_meta()
+    {
+        // What are the number of keys, and collisions per key?
         for (auto it = hash_table.begin(); it != hash_table.end(); it++)
         {
             cout << "Key: " << it->first << " Collisions: " << it->second.size() << endl;
@@ -138,7 +182,6 @@ public:
     }
 };
 
-int gen_hash_index(string);
 void test(HashTable &);
 int loadCodes(HashTable &);
 
@@ -163,23 +206,9 @@ int loadCodes(HashTable &hash_table)
     return grand_total;
 }
 
-// receives a single string and returns the sum of that string's character's ASCII values.
-// int gen_hash_index(string ascii_text)
-// {
-//     int ascii_int = 0;
-//     int hash_index;
-//     ;
-//     for (size_t i = 0; i < ascii_text.length(); i++)
-//     {
-//         ascii_int += (int)ascii_text[i];
-//     }
-
-//     // add to the hash table
-//     hash_table[ascii_int % MODULUS].push_back(ascii_text);
-
-//     return ascii_int;
-// }
-
+/**
+ * Run some tests
+ */
 void test(HashTable &hash_table)
 {
     cout << "Running tests" << endl;
@@ -194,12 +223,16 @@ void test(HashTable &hash_table)
     cout << "Removing 'E1F3E7DFE660' from the hash table" << endl;
     int key = hash_table.remove("E1F3E7DFE660");
 
-    if (key != -1) {
+    if (key != -1)
+    {
         cout << "Removed from key " << key << endl;
-    } else {
+    }
+    else
+    {
         cout << "Could not find 'E1F3E7DFE660' in the hash table" << endl;
     }
-    if (hash_table.find("E1F3E7DFE660") != -1) {
+    if (hash_table.find("E1F3E7DFE660") != -1)
+    {
         cout << "Verified item has been removed" << endl;
     }
 }
@@ -209,20 +242,17 @@ int main()
     HashTable hash_table(MODULUS);
     loadCodes(hash_table);
 
-
-
-       // display menu
     int choice;
     do
     {
-            // print the menu
-    cout << "1. Print the first 100 entries" << endl;
-    cout << "2. Find a key" << endl;
-    cout << "3. Remove a key" << endl;
-    cout << "4. Modify a key" << endl;
-    cout << "5. Print a hash" << endl;
-    cout << "6. Print meta" << endl;
-    cout << "0. Exit" << endl;
+        // print the menu
+        cout << "1. Print the first 100 entries" << endl;
+        cout << "2. Find a key" << endl;
+        cout << "3. Remove a key" << endl;
+        cout << "4. Modify a key" << endl;
+        cout << "5. Print a hash" << endl;
+        cout << "6. Print meta" << endl;
+        cout << "0. Exit" << endl;
         cin >> choice;
         cin.ignore();
         switch (choice)
@@ -238,12 +268,15 @@ int main()
             cout << "Enter a code to find: ";
             getline(cin, code);
             int key = hash_table.find(code);
-            if (key != -1) {
+            if (key != -1)
+            {
                 cout << "Found in key " << key << endl;
-            } else {
+            }
+            else
+            {
                 cout << "Could not find " << code << endl;
             }
-            
+
             break;
         }
         case 3:
@@ -252,9 +285,12 @@ int main()
             cout << "Enter a code to search remove: ";
             getline(cin, code);
             int key = hash_table.remove(code);
-            if (key != -1) {
+            if (key != -1)
+            {
                 cout << "Found in key " << key << endl;
-            } else {
+            }
+            else
+            {
                 cout << "Could not find " << code << endl;
             }
             break;
@@ -266,7 +302,7 @@ int main()
             getline(cin, code);
             cout << "Enter a replacement: ";
             getline(cin, replacement);
-            if (hash_table.modify(code, replacement))
+            if (hash_table.modify(code, replacement) != -1)
             {
                 cout << "Code replaced." << endl;
             }
@@ -278,7 +314,7 @@ int main()
         }
         case 5:
         {
-                        string code;
+            string code;
             cout << "Enter an index to print: ";
             getline(cin, code);
             hash_table.print_hash(stoi(code));
