@@ -13,7 +13,48 @@ using namespace std;
 const int MODULUS = 100003;
 // const int MODULUS = 97; // it seems like this results in more, but more even, collisions.
 
-map<int, list<string>> hash_table;
+class HashTable
+{
+private:
+    map<int, list<string>> hash_table;
+public:
+    void print(int num = 100) {
+            int count = 0;
+        for (auto it = hash_table.begin(); it != hash_table.end(); it++)
+        {
+            cout << "Key: " << it->first << " ";
+            for (auto values = it->second.begin(); values != it->second.end(); values++)
+            {
+                cout << *values << " ";
+            }
+            cout << endl
+                << endl;
+            count++;
+            if (count > num)
+            {
+                break;
+            }
+        }
+    }
+    int add(string ascii_text) {
+            int ascii_int = 0;
+    int hash_index;
+
+    for (size_t i = 0; i < ascii_text.length(); i++)
+    {
+        ascii_int += (int)ascii_text[i];
+    }
+
+    // add to the hash table
+    this->hash_table[ascii_int % MODULUS].push_back(ascii_text);
+
+    return ascii_int;
+    }
+    void remove(string);
+    bool find(string);
+    void print();
+    void clear();
+};
 
 int gen_hash_index(string);
 void test();
@@ -48,7 +89,6 @@ int gen_hash_index(string ascii_text)
     ;
     for (size_t i = 0; i < ascii_text.length(); i++)
     {
-        /* code */
         ascii_int += (int)ascii_text[i];
     }
 
@@ -101,6 +141,7 @@ void test()
 
 int main()
 {
+    HashTable has_table;
     test();
     return 0;
 }
