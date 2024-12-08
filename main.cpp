@@ -57,8 +57,23 @@ public:
 
     return ascii_key;
     }
-    void remove(string ascii_text) {
-        int ascii_key = generate_key(ascii_text);
+    int remove(string ascii_text) {
+        int find_key = find(ascii_text);
+        if (find_key != -1) {
+            for (auto it = hash_table.begin(); it != hash_table.end(); it++)
+            {
+                if (it->first == find_key) {
+                    for (auto values = it->second.begin(); values != it->second.end(); values++)
+                    {
+                        if (*values == ascii_text) {
+                            it->second.remove(ascii_text);
+                            return find_key;
+                        }
+                    }
+                }
+            }
+        }
+        return -1;
     }
     int find(string ascii_text) {
         int ascii_key = generate_key(ascii_text);
@@ -135,37 +150,22 @@ void test(HashTable &hash_table)
 
     hash_table.print(100);
     hash_table.print_meta();
-    // if (loadCodes() != 69893419)
-    // {
-    //     cout << "Test 3 failed, loadCodes should return 69893419" << endl;
-    // }
-    // else
-    // {
-    //     cout << "Test 3 Passed: loadCodes returned 69893419" << endl;
-    // }
 
-    // // show the first 100 entries
-    // int count = 0;
-    // for (auto it = hash_table.begin(); it != hash_table.end(); it++)
-    // {
-    //     cout << "Key: " << it->first << " ";
-    //     for (auto values = it->second.begin(); values != it->second.end(); values++)
-    //     {
-    //         cout << *values << " ";
-    //     }
-    //     cout << endl
-    //          << endl;
-    //     count++;
-    //     if (count > 100)
-    //     {
-    //         break;
-    //     }
-    // }
+    // test find
+    cout << "Key for 'E1F3E7DFE660' is " << hash_table.find("E1F3E7DFE660") << endl;
 
+    // test remove
+    cout << "Removing 'E1F3E7DFE660' from the hash table" << endl;
+    int key = hash_table.remove("E1F3E7DFE660");
 
-
-    // it seems like the hash looks like a bell curve with a higher modulus.
-    // probably wouldn't be the case if the data was more random?
+    if (key != -1) {
+        cout << "Removed from key " << key << endl;
+    } else {
+        cout << "Could not find 'E1F3E7DFE660' in the hash table" << endl;
+    }
+    if (hash_table.find("E1F3E7DFE660") != -1) {
+        cout << "Verified item has been removed" << endl;
+    }
 }
 
 int main()
