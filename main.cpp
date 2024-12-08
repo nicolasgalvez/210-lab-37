@@ -4,12 +4,20 @@
  */
 #include <iostream>
 #include <fstream>
+#include <map>
+#include <list>
 
 using namespace std;
+
+map<int, list<string>> hash_table;
+
 
 int gen_hash_index(string);
 void test();
 int loadCodes();
+
+
+
 /**
  * Load codes from a file.
  */
@@ -35,11 +43,16 @@ int loadCodes()
 int gen_hash_index(string ascii_text)
 {
     int ascii_int = 0;
+    int hash_index;;
     for (size_t i = 0; i < ascii_text.length(); i++)
     {
         /* code */
         ascii_int += (int)ascii_text[i];
     }
+
+    // add to the hash table
+    hash_table[ascii_int % 97].push_back(ascii_text);
+
     return ascii_int;
 }
 
